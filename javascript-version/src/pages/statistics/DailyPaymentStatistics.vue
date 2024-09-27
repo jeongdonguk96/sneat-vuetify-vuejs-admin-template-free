@@ -22,127 +22,129 @@
         </v-row>
         <br>
 
-        <VTable v-if="contents.length === 0" class="table-container">
-            데이터가 없습니다.
-        </VTable>
+        <div class="table-wrapper">
+            <VTable v-if="contents.length === 0" class="table-container">
+                데이터가 없습니다.
+            </VTable>
 
-        <VTable v-else class="table-container">
-            <thead>
-                <tr>
-                    <th>구분</th>
-                    <th v-for="dailyPayment in contents.statDay">
-                        {{ dailyPayment }}
-                    </th>
-                </tr>
-            </thead>
+            <VTable v-else class="table-container">
+                <thead>
+                    <tr>
+                        <th class="sticky-col">구분</th>
+                        <th v-for="dailyPayment in contents.statDay">
+                            {{ dailyPayment }}
+                        </th>
+                    </tr>
+                </thead>
 
-            <tbody>
-                <tr class="section-1">
-                    <td>결제 금액 합</td>
-                    <td v-for="dailyPayment in contents.totalAmount">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-1">
-                    <td>구매 금액</td>
-                    <td v-for="dailyPayment in contents.buyAmount">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-1">
-                    <td>구매 비율</td>
-                    <td v-for="dailyPayment in contents.buyAmountPercent">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-1">
-                    <td>취소 금액</td>
-                    <td v-for="dailyPayment in contents.cancelAmount">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-1">
-                    <td>취소 비율</td>
-                    <td v-for="dailyPayment in contents.cancelAmountPercent">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-1">
-                    <td>환불 금액</td>
-                    <td v-for="dailyPayment in contents.refundAmount">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-1">
-                    <td>환불 비율</td>
-                    <td v-for="dailyPayment in contents.refundAmountPercent">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
+                <tbody>
+                    <tr class="section-1">
+                        <td class="sticky-col">결제 금액 합</td>
+                        <td v-for="dailyPayment in contents.totalAmount">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-1">
+                        <td class="sticky-col">구매 금액</td>
+                        <td v-for="dailyPayment in contents.buyAmount">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-1">
+                        <td class="sticky-col">구매 비율</td>
+                        <td v-for="dailyPayment in contents.buyAmountPercent">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-1">
+                        <td class="sticky-col">취소 금액</td>
+                        <td v-for="dailyPayment in contents.cancelAmount">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-1">
+                        <td class="sticky-col">취소 비율</td>
+                        <td v-for="dailyPayment in contents.cancelAmountPercent">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-1">
+                        <td class="sticky-col">환불 금액</td>
+                        <td v-for="dailyPayment in contents.refundAmount">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-1">
+                        <td class="sticky-col">환불 비율</td>
+                        <td v-for="dailyPayment in contents.refundAmountPercent">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
 
-                <tr class="section-2">
-                    <td>결제 건수 합</td>
-                    <td v-for="dailyPayment in contents.paymentCount">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-2">
-                    <td>구매 건수</td>
-                    <td v-for="dailyPayment in contents.buyCount">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-2">
-                    <td>구매 건수 비율</td>
-                    <td v-for="dailyPayment in contents.buyCountPercent">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-2">
-                    <td>취소 건수</td>
-                    <td v-for="dailyPayment in contents.cancelCount">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-2">
-                    <td>취소 건수 비율</td>
-                    <td v-for="dailyPayment in contents.cancelCountPercent">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-2">
-                    <td>환불 건수</td>
-                    <td v-for="dailyPayment in contents.refundCount">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-2">
-                    <td>환불 건수 비율</td>
-                    <td v-for="dailyPayment in contents.refundCountPercent">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
+                    <tr class="section-2">
+                        <td class="sticky-col">결제 건수 합</td>
+                        <td v-for="dailyPayment in contents.paymentCount">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-2">
+                        <td class="sticky-col">구매 건수</td>
+                        <td v-for="dailyPayment in contents.buyCount">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-2">
+                        <td class="sticky-col">구매 건수 비율</td>
+                        <td v-for="dailyPayment in contents.buyCountPercent">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-2">
+                        <td class="sticky-col">취소 건수</td>
+                        <td v-for="dailyPayment in contents.cancelCount">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-2">
+                        <td class="sticky-col">취소 건수 비율</td>
+                        <td v-for="dailyPayment in contents.cancelCountPercent">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-2">
+                        <td class="sticky-col">환불 건수</td>
+                        <td v-for="dailyPayment in contents.refundCount">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-2">
+                        <td class="sticky-col">환불 건수 비율</td>
+                        <td v-for="dailyPayment in contents.refundCountPercent">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
 
-                <tr class="section-3">
-                    <td>건당 평균 구매 금액</td>
-                    <td v-for="dailyPayment in contents.buyAmountAverage">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-3">
-                    <td>건당 평균 취소 금액</td>
-                    <td v-for="dailyPayment in contents.cancelAmountAverage">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-                <tr class="section-3">
-                    <td>건당 평균 환불 금액</td>
-                    <td v-for="dailyPayment in contents.refundAmountAverage">
-                        {{ dailyPayment }}
-                    </td>
-                </tr>
-            </tbody>
-        </VTable>
+                    <tr class="section-3">
+                        <td class="sticky-col">건당 평균 구매 금액</td>
+                        <td v-for="dailyPayment in contents.buyAmountAverage">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-3">
+                        <td class="sticky-col">건당 평균 취소 금액</td>
+                        <td v-for="dailyPayment in contents.cancelAmountAverage">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                    <tr class="section-3">
+                        <td class="sticky-col">건당 평균 환불 금액</td>
+                        <td v-for="dailyPayment in contents.refundAmountAverage">
+                            {{ dailyPayment }}
+                        </td>
+                    </tr>
+                </tbody>
+            </VTable>
+        </div>
     </div>
 </template>
 
@@ -239,6 +241,20 @@ const exportData = async () => {
 
 .table-container {
     border-radius: 0px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-wrapper {
+  overflow-x: auto; /* 가로 스크롤 활성화 */
+  width: 100%;
+}
+
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background-color: white; /* 스크롤할 때 고정된 열이 가려지지 않도록 배경색 지정 */
+  z-index: 1; /* 테이블 데이터보다 위에 나타나도록 설정 */
 }
 
 .section-1 {

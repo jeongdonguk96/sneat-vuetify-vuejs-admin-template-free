@@ -43,7 +43,7 @@
                         <tr v-else v-for="(content, index) in contents" :key="content.correlationId">
                             <td>{{ (currentPage - 1) * pageSize + index + 1 }}</td>
                             <td>{{ content.correlationId }}</td>
-                            <td>{{ content.ctn }}</td>
+                            <td>{{ maskingCtn(content.ctn) }}</td>
                             <td>{{ content.name }}</td>
                             <td>{{ content.price }}</td>
                             <td>{{ content.regDate }}</td>
@@ -72,8 +72,9 @@
 </template>
 
 <script setup lang='js'>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRefundStore } from '@/plugins/stores/refund/refund-gdcb'
+import { formatCtn, maskingCtn } from '@/plugins/stores/common/masking';
 import { storeToRefs } from 'pinia'
 
 
@@ -129,6 +130,11 @@ const getContents = () => {
     
     store.getContents(selectedDcb.value, inputtedKeyword.value, currentPage.value);
 }
+
+
+onMounted(() => {
+    getContents(selectedDcb.value, inputtedKeyword.value, currentPage.value);
+});
 </script>
 
 <style>
@@ -179,5 +185,21 @@ thead th {
 
 .min-width-input {
     min-width: 160px;
+}
+
+.masked {
+    display: inline; /* 항상 마스킹된 콘텐츠 표시 */
+}
+
+.original {
+    display: none; /* 기본적으로 원본 콘텐츠 숨김 */
+}
+
+td:hover .masked {
+    display: none; /* 마우스 오버 시 마스킹된 콘텐츠 숨김 */
+}
+
+td:hover .original {
+    display: inline; /* 마우스 오버 시 원본 콘텐츠 표시 */
 }
 </style>

@@ -38,7 +38,7 @@
                             <td>{{ (currentPage - 1) * pageSize + index + 1 }}</td>
                             <td><input type="checkbox" v-model="selectedItem" :value="content.itemNo" /></td>
                             <td>{{ content.itemNm }}</td>
-                            <td>{{ content.regId }}</td>
+                            <td>{{ maskingId(content.regId) }}</td>
                             <td>{{ content.regDt }}</td>
                         </tr>
                     </tbody>
@@ -92,6 +92,7 @@
 <script setup lang='js'>
 import { ref, computed } from 'vue';
 import { useBlockItemStore } from '@/plugins/stores/block/block-item'
+import { maskingId } from '@/plugins/stores/common/masking';
 import { storeToRefs } from 'pinia'
 import { dcbs } from '@/plugins/stores/common/dcb'
 

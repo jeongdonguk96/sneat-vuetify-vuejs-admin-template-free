@@ -16,7 +16,7 @@ export const useSellerByMonthStore = defineStore('main', {
             const API_URL = "http://192.168.10.134:8080/seller/month";
             try {
                 const response = await axios.get(API_URL, {
-                    params: { dcb, year, merchantNm: inputtedKeyword, page, pageSize: this.pageSize }
+                    params: { dcb, year, merchantName: inputtedKeyword, page, pageSize: this.pageSize }
                 });
                 
                 this.contents = response.data.responsePage.content;
@@ -33,7 +33,7 @@ export const useSellerByMonthStore = defineStore('main', {
             const API_URL = "http://192.168.10.134:8080/seller/month/excel";
             try {
                 const response = await axios.get(API_URL, {
-                    params: { dcb, year, merchantNm: inputtedKeyword },
+                    params: { dcb, year, merchantName: inputtedKeyword },
                     responseType: 'blob',
                     headers: {
                         'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

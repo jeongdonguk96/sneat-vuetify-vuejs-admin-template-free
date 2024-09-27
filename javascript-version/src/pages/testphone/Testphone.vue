@@ -7,6 +7,10 @@
                     v-model="selectedDcb" variant="outlined"></v-select>
             </v-col>
             <v-col cols="auto">
+                <v-text-field class="min-width-input" v-model="inputtedKeyword" label="CTN"
+                    variant="outlined"></v-text-field>
+            </v-col>
+            <v-col cols="auto">
                 <v-btn variant="elevated" @click="getContents">
                     조회
                 </v-btn>
@@ -35,10 +39,22 @@
                         <tr v-else v-for="(content, index) in contents" :key="content.ctn">
                             <td>{{ (currentPage - 1) * pageSize + index + 1 }}</td>
                             <td><input type="checkbox" v-model="selectedCtn" :value="content.ctn" /></td>
-                            <td>{{ content.ctn }}</td>
-                            <td>{{ content.email }}</td>
-                            <td>{{ content.name }}</td>
-                            <td>{{ content.registrar }}</td>
+                            <td>
+                                <span class="masked">{{ maskingCtn(content.ctn) }}</span>
+                                <span class="original">{{ formatCtn(content.ctn) }}</span>
+                            </td>
+                            <td>
+                                <span class="masked">{{ maskingEmail(content.email) }}</span>
+                                <span class="original">{{ content.email }}</span>
+                            </td>
+                            <td>
+                                <span class="masked">{{ maskingName(content.name) }}</span>
+                                <span class="original">{{ content.name }}</span>
+                            </td>
+                            <td>
+                                <span class="masked">{{ maskingId(content.registrar) }}</span>
+                                <span class="original">{{ content.registrar }}</span>
+                            </td>
                             <td>{{ content.registrationDate }}</td>
                         </tr>
                     </tbody>
@@ -98,7 +114,8 @@
 <script setup lang='js'>
 import { ref, computed } from 'vue';
 import { useTestphoneStore } from '@/plugins/stores/testphone/testphone'
-import { validateCtn, validateEmail, validateName } from '@/plugins/stores/common/validation';
+import { validateCtn, validateEmail, validateName, validateInputtedCtn } from '@/plugins/stores/common/validation';
+import { formatCtn, maskingCtn, maskingId, maskingEmail, maskingName } from '@/plugins/stores/common/masking';
 import { storeToRefs } from 'pinia'
 import { dcbs } from '@/plugins/stores/common/dcb'
 
@@ -119,6 +136,7 @@ const ctnError = ref('');
 const emailError = ref('');
 const selectedCtn = ref([]);
 let selectedDcb = dcb;
+let inputtedKeyword = ref('');
 
 
 const totalPages = computed(() => {
@@ -133,7 +151,7 @@ const goToPage = (pageNumber) => {
     }
 
     if (pageNumber >= 1 && pageNumber <= totalPages.value) {
-        store.getContents(selectedDcb.value, pageNumber);
+        store.getContents(selectedDcb.value, inputtedKeyword.value, pageNumber);
         selectedCtn.value = [];
     }
 };
@@ -158,8 +176,13 @@ const getContents = () => {
         alert('DCB를 선택해주세요.');
         return false;
     }
+    
+    if (validateInputtedCtn(inputtedKeyword.value)) {
+        alert(validateInputtedCtn(inputtedKeyword.value))
+        return false;
+    }
 
-    store.getContents(selectedDcb.value, currentPage.value);
+    store.getContents(selectedDcb.value, inputtedKeyword.value, currentPage.value);
     selectedCtn.value = [];
 }
 
@@ -178,7 +201,7 @@ const deleteContents = () => {
     const isConfirmed = confirm('정말 삭제하시겠습니까?');
 
     if (isConfirmed) {
-        store.deleteContents(selectedDcb.value, selectedCtn.value).then(() => {
+        store.deleteContents(selectedDcb.value, inputtedKeyword.value, selectedCtn.value).then(() => {
             selectedCtn.value = [];
         });
     }
@@ -230,7 +253,7 @@ const validateForm = () => {
 
 const save = () => {
     if (validateForm()) {
-        store.createContent(selectedDcb.value, form.value.ctn, form.value.email, form.value.name);
+        store.createContent(selectedDcb.value, inputtedKeyword.value, form.value.ctn, form.value.email, form.value.name);
         closeDialog();
     }
 };
@@ -279,6 +302,27 @@ thead th {
 }
 
 .min-width-select {
+ 
     min-width: 120px;
+}
+
+.min-width-input {
+    min-width: 160px;
+}
+
+.masked {
+    display: inline; /* 항상 마스킹된 콘텐츠 표시 */
+}
+
+.original {
+    display: none; /* 기본적으로 원본 콘텐츠 숨김 */
+}
+
+td:hover .masked {
+    display: none; /* 마우스 오버 시 마스킹된 콘텐츠 숨김 */
+}
+
+td:hover .original {
+    display: inline; /* 마우스 오버 시 원본 콘텐츠 표시 */
 }
 </style>

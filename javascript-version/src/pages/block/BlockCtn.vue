@@ -37,8 +37,14 @@
                         <tr v-else v-for="(content, index) in contents" :key="content.ctn">
                             <td>{{ (currentPage - 1) * pageSize + index + 1 }}</td>
                             <td><input type="checkbox" v-model="selectedCtn" :value="content.ctn" /></td>
-                            <td>{{ content.ctn }}</td>
-                            <td>{{ content.mbrId }}</td>
+                            <td>
+                                <span class="masked">{{ maskingCtn(content.ctn) }}</span>
+                                <span class="original">{{ formatCtn(content.ctn) }}</span>
+                            </td>
+                            <td>
+                                <span class="masked">{{ maskingId(content.mbrId) }}</span>
+                                <span class="original">{{ content.mbrId }}</span>
+                            </td>
                             <td>{{ content.regDt }}</td>
                         </tr>
                     </tbody>
@@ -93,7 +99,8 @@
 <script setup lang='js'>
 import { ref, computed } from 'vue';
 import { useBlockCtnStore } from '@/plugins/stores/block/block-ctn'
-import { validateCtn } from '@/plugins/stores/common/validation';
+import { validateCtn, validateInputtedCtn } from '@/plugins/stores/common/validation';
+import { formatCtn, maskingCtn, maskingId } from '@/plugins/stores/common/masking';
 import { storeToRefs } from 'pinia'
 import { dcbs } from '@/plugins/stores/common/dcb'
 
@@ -151,8 +158,9 @@ const getContents = () => {
         return false;
     }
 
-    if (inputtedKeyword.value.trim().length === 0) {
-        inputtedKeyword.value = '';
+    if (validateInputtedCtn(inputtedKeyword.value)) {
+        alert(validateInputtedCtn(inputtedKeyword.value))
+        return false;
     }
 
     store.getContents(selectedDcb.value, inputtedKeyword.value, currentPage.value);
@@ -268,5 +276,21 @@ thead th {
 
 .min-width-input {
     min-width: 160px;
+}
+
+.masked {
+    display: inline; /* 항상 마스킹된 콘텐츠 표시 */
+}
+
+.original {
+    display: none; /* 기본적으로 원본 콘텐츠 숨김 */
+}
+
+td:hover .masked {
+    display: none; /* 마우스 오버 시 마스킹된 콘텐츠 숨김 */
+}
+
+td:hover .original {
+    display: inline; /* 마우스 오버 시 원본 콘텐츠 표시 */
 }
 </style>

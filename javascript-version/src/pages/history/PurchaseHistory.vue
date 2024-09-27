@@ -41,7 +41,10 @@
                         <tr v-else v-for="(content, index) in contents">
                             <td>{{ (currentPage - 1) * pageSize + index + 1 }}</td>
                             <td>{{ content.date }}</td>
-                            <td>{{ content.ctn }}</td>
+                            <td>
+                                <span class="masked">{{ maskingCtn(content.ctn) }}</span>
+                                <span class="original">{{ formatCtn(content.ctn) }}</span>
+                            </td>
                             <td>{{ content.item }}</td>
                             <td>{{ content.price }}</td>
                             <td>{{ content.result }}</td>
@@ -71,6 +74,8 @@
 <script setup lang='js'>
 import { computed } from 'vue';
 import { usePurchaseHistoryStore } from '@/plugins/stores/history/purchase-history'
+import { validateInputtedCtn } from '@/plugins/stores/common/validation';
+import { formatCtn, maskingCtn } from '@/plugins/stores/common/masking';
 import { storeToRefs } from 'pinia'
 import { dcbs } from '@/plugins/stores/common/dcb'
 
@@ -136,8 +141,8 @@ const validateAndGetContents = () => {
         return;
     }
 
-    if (inputtedKeyword.value.trim().length === 0) {
-        alert('CTN을 입력해주세요.');
+    if (validateInputtedCtn(inputtedKeyword.value)) {
+        alert(validateInputtedCtn(inputtedKeyword.value))
         return false;
     }
 
@@ -206,5 +211,21 @@ thead th {
 
 .min-width-input {
     min-width: 160px;
+}
+
+.masked {
+    display: inline; /* 항상 마스킹된 콘텐츠 표시 */
+}
+
+.original {
+    display: none; /* 기본적으로 원본 콘텐츠 숨김 */
+}
+
+td:hover .masked {
+    display: none; /* 마우스 오버 시 마스킹된 콘텐츠 숨김 */
+}
+
+td:hover .original {
+    display: inline; /* 마우스 오버 시 원본 콘텐츠 표시 */
 }
 </style>

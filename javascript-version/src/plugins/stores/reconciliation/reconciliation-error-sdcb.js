@@ -10,11 +10,11 @@ export const useReconciliationErrorStore = defineStore('main', {
     }),
 
     actions: {
-        async getContents(dcb, month, case_, ctn, page = 1) {
+        async getContents(dcb, month, inputtedSearchType, ctn, page = 1) {
             const API_URL = "http://192.168.10.134:8080/reconciliation/error/sdcb";
             try {
                 const response = await axios.get(API_URL, {
-                    params: { dcb, month, case: case_, ctn, page, pageSize: this.pageSize }
+                    params: { dcb, month, case: inputtedSearchType, ctn, page, pageSize: this.pageSize }
                 });
                 this.contents = response.data.responsePage.content;
                 this.total = response.data.responsePage.totalElements;
@@ -24,11 +24,11 @@ export const useReconciliationErrorStore = defineStore('main', {
             }
         },
         
-        async exportData(dcb, month, case_, ctn) {
+        async exportData(dcb, month, inputtedSearchType, ctn) {
             const API_URL = "http://192.168.10.134:8080/reconciliation/error/sdcb/excel";
             try {
                 const response = await axios.get(API_URL, {
-                    params: { dcb, month, case: case_, ctn },
+                    params: { dcb, month, case: inputtedSearchType, ctn },
                     responseType: 'blob',
                     headers: {
                         'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

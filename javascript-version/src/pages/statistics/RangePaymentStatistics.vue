@@ -37,7 +37,8 @@
             </v-col>
         </v-row>
         <br>
-        <v-table class="table-container">
+        
+        <VTable class="table-container">
             <thead>
                 <tr>
                     <th>기간</th>
@@ -50,25 +51,26 @@
                     <th>인당 결제 금액</th>
                 </tr>
             </thead>
+            
             <tbody>
                 <tr v-if="contents.length === 0">
                     <td colspan="8" style="text-align: center;">데이터가 없습니다.</td>
                 </tr>
-                <template v-else>
-                    <tr v-for="(data, index) in contents" :key="index">
-                        <td v-if="data.statMonth && index === 0" :rowspan="contents.length">{{ data.statMonth }}</td>
-                        <td v-if="data.statDay && index === 0" :rowspan="contents.length">{{ data.statDay }}</td>
-                        <td>{{ data.a_stat }}</td>
-                        <td>{{ data.b_stat }}</td>
-                        <td>{{ data.c_stat }}</td>
-                        <td>{{ data.d_stat }}</td>
-                        <td>{{ data.e_stat }}</td>
-                        <td>{{ data.f_stat }}</td>
-                        <td>{{ data.g_stat }}</td>
+                <template v-else v-for="dayContents in contents">
+                    <tr v-for="(content, index) in dayContents" :key="content.costRange">
+                        <td v-if="content.stat_month && index === 0" :rowspan="dayContents.length">{{ content.stat_month }}</td>
+                        <td v-if="content.stat_day && index === 0" :rowspan="dayContents.length">{{ content.stat_day }}</td>
+                        <td>{{ content.a_stat }}</td>
+                        <td>{{ content.b_stat }}</td>
+                        <td>{{ content.c_stat }}</td>
+                        <td>{{ content.d_stat }}</td>
+                        <td>{{ content.e_stat }}</td>
+                        <td>{{ content.f_stat }}</td>
+                        <td>{{ content.g_stat }}</td>
                     </tr>
                 </template>
-            </tbody>
-        </v-table>
+            </tbody>            
+        </VTable>
     </div>
 </template>
 
@@ -127,7 +129,6 @@ const getThreeMonthsAgo = (baseDate) => {
 const onDateUnitChange = () => {
     startDate.value = '';
     endDate.value = '';
-    contents.value = [];
 
     if (dateUnit.value === 'day') {
         maxDate.value = getYesterday();
@@ -199,6 +200,7 @@ const validateAndGetStatistics = () => {
         }
     }
 
+    contents.value = [];
     getStatistics();
 };
 
@@ -247,11 +249,11 @@ const validateAndExportData = () => {
 
 
 // 데이터를 엑셀로 내보낸다.
-const exportData = async () => {
+const exportData = () => {
     if (dateUnit.value === 'day') {
-        await store.exportDailyData(selectedDcb.value, startDate.value, endDate.value);
+        store.exportDailyData(selectedDcb.value, startDate.value, endDate.value);
     } else {
-        await store.exportMonthlyData(selectedDcb.value, startDate.value, endDate.value);
+        store.exportMonthlyData(selectedDcb.value, startDate.value, endDate.value);
     }
 };
 </script>

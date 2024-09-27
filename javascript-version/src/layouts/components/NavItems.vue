@@ -112,7 +112,7 @@ import VerticalNavGroup from '@layouts/components/VerticalNavGroup.vue';
                 title: '이력',
                 icon: 'bx-file',
                 children: [
-                    { title: '전환 이력', to: '/voc/histories/conversion' },
+                    { title: '전환 이력 (GDCB)', to: '/voc/histories/conversion/gdcb' },
                     { title: '문자 발송 이력', to: '/voc/histories/mms' },
                     { title: '결제 시도 내역', to: '/voc/histories/purchase' },
                     { title: '결제 등급 이력', to: '' },
@@ -181,7 +181,7 @@ import VerticalNavGroup from '@layouts/components/VerticalNavGroup.vue';
                 title: '결제 정책',
                 icon: 'bx-file',
                 children: [
-                    { title: '결제 정책', to: '' },
+                    { title: '결제 정책', to: '/system/policies' },
                     { title: '한도 등급 설정', to: '' },
                 ],
             },

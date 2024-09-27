@@ -42,11 +42,11 @@
                         <tr v-if="contents.length === 0">
                             <td colspan="35" style="text-align: center;">데이터가 없습니다.</td>
                         </tr>
-                        <tr v-else v-for="(content, index) in contents" :key="content.merchantNm">
+                        <tr v-else v-for="(content, index) in contents" :key="content.merchantName">
                             <td>{{ (currentPage - 1) * pageSize + index + 1 }}</td>
-                            <td>{{ content.merchantNm }}</td>
+                            <td>{{ content.merchantName }}</td>
                             <td>{{ content.total }}</td>
-                            <td>{{ content.ratio }}</td>
+                            <td>{{ content.percent }}</td>
                             <td v-for="day in daysInMonth" :key="day">{{ content.dailySales[day - 1] || 0 }}</td>
                         </tr>
                     </tbody>

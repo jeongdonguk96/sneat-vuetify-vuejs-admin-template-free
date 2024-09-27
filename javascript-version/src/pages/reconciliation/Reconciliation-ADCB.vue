@@ -15,7 +15,7 @@
                     v-model="selectedFileType" variant="outlined"></v-select>
             </v-col>
             <v-col cols="auto">
-                <v-btn variant="elevated" @click="validateAndGetStatistics">
+                <v-btn variant="elevated" @click="validateAndGetContents">
                     조회
                 </v-btn>
             </v-col>
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang='js'>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useReconciliationStore } from '@/plugins/stores/reconciliation/reconciliation-adcb'
 import { storeToRefs } from 'pinia'
 
@@ -133,7 +133,7 @@ const getDateBefore31Days = (baseDate, days = 31) => {
 
 
 // 데이터 유효성 검사한 뒤 통계 데이터를 조회한다.
-const validateAndGetStatistics = () => {
+const validateAndGetContents = () => {
     if (selectedDcb.value === '' || selectedDcb.value == null) {
         alert("조회할 DCB를 선택해주세요.");
         return;
@@ -161,12 +161,12 @@ const validateAndGetStatistics = () => {
         return;
     }
 
-    getStatistics();
+    getContents();
 };
 
 
 // 데이터를 조회한다.
-const getStatistics = () => {
+const getContents = () => {
     store.getContents(selectedDcb.value, startDate.value, endDate.value, selectedFileType.value, currentPage.value);
 };
 
@@ -209,6 +209,11 @@ let selectedFileType = fileType;
 let maxDate = ref(getYesterday());
 let startDate = ref(getDateBefore31Days(new Date()));
 let endDate = ref(getYesterday());
+
+
+onMounted(() => {
+    getContents(selectedDcb.value, startDate.value, endDate.value, selectedFileType.value, currentPage.value);
+});
 </script>
 
 <style>

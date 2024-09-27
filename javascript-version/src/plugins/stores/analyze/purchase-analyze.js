@@ -9,7 +9,7 @@ export const usePurchaseAnalyzeStore = defineStore('main', {
 
     actions: {
         async getContents(dcb, startDate, endDate) {
-            const API_URL = "http://192.168.10.134:8080/product";
+            const API_URL = "http://192.168.10.134:8080/analyze/purchase";
             try {
                 const response = await axios.get(API_URL, {
                     params: { dcb, startDate, endDate }
@@ -23,7 +23,7 @@ export const usePurchaseAnalyzeStore = defineStore('main', {
         },
 
         async exportData(dcb, startDate, endDate) {
-            const API_URL = "http://192.168.10.134:8080/product/excel";
+            const API_URL = "http://192.168.10.134:8080/analyze/purchase/excel";
             try {
                 const response = await axios.get(API_URL, {
                     params: { dcb, startDate, endDate },

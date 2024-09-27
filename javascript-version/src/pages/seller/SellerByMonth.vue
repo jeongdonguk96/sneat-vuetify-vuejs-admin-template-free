@@ -44,9 +44,9 @@
                         </tr>
                         <tr v-else v-for="(content, index) in contents" :key="content.merchantNm">
                             <td>{{ (currentPage - 1) * pageSize + index + 1 }}</td>
-                            <td>{{ content.merchantNm }}</td>
+                            <td>{{ content.merchantName }}</td>
                             <td>{{ content.total }}</td>
-                            <td>{{ content.ratio }}</td>
+                            <td>{{ content.percent }}</td>
                             <td v-for="month in monthsInYear" :key="month">{{ content.monthlySales[month - 1] || 0 }}</td>
                         </tr>
                     </tbody>

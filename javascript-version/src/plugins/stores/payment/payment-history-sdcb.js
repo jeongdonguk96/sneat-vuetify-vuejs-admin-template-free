@@ -15,8 +15,10 @@ export const usePaymentHistoryStore = defineStore('main', {
         async getContents(dcb, selectedPaymentTypes, startDate, endDate, inputtedSearchType, inputtedKeyword, page = 1) {
             const API_URL = "http://192.168.10.134:8080/payment/sdcb";
             try {
+                const selectedPaymentType = selectedPaymentTypes.join(',');
+                
                 const response = await axios.get(API_URL, {
-                    params: { dcb, selectedPaymentTypes, startDate, endDate, inputtedSearchType, inputtedKeyword, page, pageSize: this.pageSize }
+                    params: { dcb, selectedPaymentTypes: selectedPaymentType, startDate, endDate, searchType: inputtedSearchType, keyword: inputtedKeyword, page, pageSize: this.pageSize }
                 });
                 
                 this.contents = response.data.responsePage.content;
@@ -32,8 +34,10 @@ export const usePaymentHistoryStore = defineStore('main', {
         async exportData(dcb, selectedPaymentTypes, startDate, endDate, inputtedSearchType, inputtedKeyword) {
             const API_URL = "http://192.168.10.134:8080/payment/sdcb/excel";
             try {
+                const selectedPaymentType = selectedPaymentTypes.join(',');
                 const response = await axios.get(API_URL, {
-                    params: { dcb, selectedPaymentTypes, startDate, endDate, inputtedSearchType, inputtedKeyword },
+                    
+                    params: { dcb, selectedPaymentTypes: selectedPaymentType, startDate, endDate, searchType: inputtedSearchType, keyword: inputtedKeyword },
                     responseType: 'blob',
                     headers: {
                         'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

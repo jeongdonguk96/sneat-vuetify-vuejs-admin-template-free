@@ -123,8 +123,9 @@
 </template>
 
 <script setup lang='js'>
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useReconciliationErrorStore } from '@/plugins/stores/reconciliation/reconciliation-error-sdcb'
+import { validateInputtedCtn } from '@/plugins/stores/common/validation';
 import { storeToRefs } from 'pinia'
 
 
@@ -199,8 +200,9 @@ const validateAndGetContents = () => {
         return;
     }
 
-    if (inputtedKeyword.value.trim().length === 0) {
-        inputtedKeyword.value = '';
+    if (validateInputtedCtn(inputtedKeyword.value)) {
+        alert(validateInputtedCtn(inputtedKeyword.value))
+        return false;
     }
 
     getContents();
@@ -217,7 +219,9 @@ let inputtedKeyword = keyword;
 let selectedDcb = ref('SDCB');
 let selectedOption = ref('선택하세요');
 let inputtedSearchType = ref('');
-const searchTypes = ['CASE1', 'CASE2', 'CASE3'];
+const searchTypes = computed(() => {
+    return ['CASE1', 'CASE2', 'CASE3'];
+});
 const selectOptions = ['선택하세요', '청구 내역 생성(자동)', '청구 내역 취소(자동)', '청구 취소(자동) 후 SKP에 재전송 요청', 'SKP에 구매 이력 생성 요청', 'SKP에 구매 취소 요청'];
 const maxDate = ref(getThisMonth());
 let month = ref(getThisMonth());

@@ -43,6 +43,12 @@ export const validatePasswordConfirm = (password, passwordConfirm) => {
 };
 
 
+export const validateInputtedCtn = (ctn) => {
+    const numberRegex = /^\d{4,}$/;
+    return numberRegex.test(ctn) ? '' : '공백을 포함하지 않는 4자리 이상 번호만을 입력하세요.';
+};
+
+
 // export const validateFeetypeCode = (feetypeCode) => {
 //     const feetypeCodeRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/;
 //     return feetypeCodeRegex.test(feetypeCode) ? '' : '요금제 코드는';

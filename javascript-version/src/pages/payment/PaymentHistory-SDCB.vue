@@ -68,14 +68,17 @@
                         </tr>
                         <tr v-else v-for="(content, index) in contents">
                             <td>{{ (currentPage - 1) * pageSize + index + 1 }}</td>
-                            <td>{{ content.ctn }}</td>
-                            <td>{{ content.stdDt }}</td>
-                            <td>{{ content.merchantContact }}</td>
+                            <td>
+                                <span class="masked">{{ maskingCtn(content.ctn) }}</span>
+                                <span class="original">{{ formatCtn(content.ctn) }}</span>
+                            </td>
+                            <td>{{ content.purchaseDate }}</td>
+                            <td>{{ content.cancelDate }}</td>
                             <td>{{ content.price }}</td>
-                            <td>{{ content.blockDt }}</td>
-                            <td>{{ content.productId }}</td>
-                            <td>{{ content.sellerId }}</td>
+                            <td>{{ content.paymentName }}</td>
+                            <td>{{ content.productName }}</td>
                             <td>{{ content.sellerCompany }}</td>
+                            <td>{{ content.sellerName }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -102,6 +105,8 @@
 <script setup lang='js'>
 import { ref, computed, onMounted } from 'vue';
 import { usePaymentHistoryStore } from '@/plugins/stores/payment/payment-history-sdcb'
+import { validateInputtedCtn } from '@/plugins/stores/common/validation';
+import { formatCtn, maskingCtn } from '@/plugins/stores/common/masking';
 import { storeToRefs } from 'pinia'
 
 
@@ -172,9 +177,9 @@ const validateAndGetContents = () => {
         return;
     }
 
-    const today = new Date(getToday());
+    const thisMonth = new Date(getLastMonth());
 
-    if (new Date(startDate.value) > today || new Date(endDate.value) > today) {
+    if (new Date(startDate.value) > thisMonth || new Date(endDate.value) > thisMonth) {
         alert("선택한 날의 데이터가 아직 생성되지 않았습니다.");
         return;
     }
@@ -189,8 +194,13 @@ const validateAndGetContents = () => {
         return;
     }
 
-    if (inputtedKeyword.value.trim().length === 0) {
-        inputtedKeyword.value = '';
+    if (searchType.value === 'CTN') {
+        if (validateInputtedCtn(inputtedKeyword.value)) {
+            alert(validateInputtedCtn(inputtedKeyword.value))
+            return false;
+        }
+    } else {
+        inputtedKeyword.value = '';   
     }
 
     getContents();
@@ -198,7 +208,7 @@ const validateAndGetContents = () => {
 
 
 const getContents = () => {
-    store.getContents(selectedDcb.value, selectedPaymentTypes.value, startDate.value, endDate.value, inputtedSearchType.value, inputtedKeyword.value, pageNumber);
+    store.getContents(selectedDcb.value, selectedPaymentTypes.value, startDate.value, endDate.value, inputtedSearchType.value, inputtedKeyword.value, currentPage.value);
 }
 
 
@@ -249,13 +259,14 @@ let selectedPaymentTypes = ref([]);
 let maxDate = ref(getLastMonth());
 let startDate = ref(getThreeMonthsAgo(new Date()));
 let endDate = ref(getLastMonth());
-const paymentTypes = ['휴대폰 결제', '신용카드', 'U+스토어 캐시', '문화상품권(컬처캐시)', '쿠폰 결제', '기타'];
+const paymentTypes = ['휴대폰결제', '신용카드', 'U+스토어 캐쉬', '문화상품권(컬처캐쉬)', '쿠폰 결제', '기타'];
 const searchTypes = ['CTN', '상품명'];
 
 
 // 페이지 로드시 모든 결제 수단을 기본으로 선택
 onMounted(() => {
     selectedPaymentTypes.value = [...paymentTypes];
+    getContents(selectedDcb.value, selectedPaymentTypes.value, startDate.value, endDate.value, inputtedSearchType.value, inputtedKeyword.value, currentPage.value);
 });
 </script>
 
@@ -307,5 +318,21 @@ thead th {
 
 .min-width-input {
     min-width: 160px;
+}
+
+.masked {
+    display: inline; /* 항상 마스킹된 콘텐츠 표시 */
+}
+
+.original {
+    display: none; /* 기본적으로 원본 콘텐츠 숨김 */
+}
+
+td:hover .masked {
+    display: none; /* 마우스 오버 시 마스킹된 콘텐츠 숨김 */
+}
+
+td:hover .original {
+    display: inline; /* 마우스 오버 시 원본 콘텐츠 표시 */
 }
 </style>

@@ -11,7 +11,7 @@
                 <input type="month" v-model="endDate" :min="startDate" :max="maxDate" />
             </v-col>
             <v-col cols="auto">
-                <v-btn variant="elevated" @click="validateAndGetStatistics">
+                <v-btn variant="elevated" @click="validateAndGetContents">
                     조회
                 </v-btn>
             </v-col>
@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang='js'>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useReconciliationStore } from '@/plugins/stores/reconciliation/reconciliation-sdcb'
 import { storeToRefs } from 'pinia'
 
@@ -154,7 +154,7 @@ const getThreeMonthsAgo = (baseDate) => {
 
 
 // 데이터 유효성 검사한 뒤 통계 데이터를 조회한다.
-const validateAndGetStatistics = () => {
+const validateAndGetContents = () => {
     if (selectedDcb.value === '' || selectedDcb.value == null) {
         alert("조회할 DCB를 선택해주세요.");
         return;
@@ -171,12 +171,12 @@ const validateAndGetStatistics = () => {
         return;
     }
 
-    getStatistics();
+    getContents();
 };
 
 
 // 데이터를 조회한다.
-const getStatistics = () => {
+const getContents = () => {
     store.getContents(selectedDcb.value, startDate.value, endDate.value, currentPage.value);
 };
 
@@ -213,6 +213,11 @@ let selectedDcb = ref('SDCB');
 let maxDate = ref(getLastMonth());
 let startDate = ref(getThreeMonthsAgo(new Date()));
 let endDate = ref(getLastMonth());
+
+
+onMounted(() => {
+    getContents(selectedDcb.value, startDate.value, endDate.value);
+});
 </script>
 
 <style>

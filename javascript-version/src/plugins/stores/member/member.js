@@ -30,7 +30,7 @@ export const useMemberStore = defineStore('main', {
             const API_URL = "http://192.168.10.134:8080/members";
             try {
                 await axios.delete(API_URL, {
-                    data: { ids }
+                    ids
                 });
                 
                 const remainingItems = this.total - ids.length;
@@ -63,19 +63,6 @@ export const useMemberStore = defineStore('main', {
             }
         },
         
-        async authenticate(password) {
-            const API_URL = "http://192.168.10.134:8080/members/authentication";
-            try {
-                const response = await axios.get(API_URL, {
-                    params: { password }
-                });
-                
-                return response.data;
-            } catch (error) {
-                alert('작업 중 에러가 발생했습니다.')
-            }
-        },
-        
         async modifyContent(team, role, services, username, password) {
             const API_URL = "http://192.168.10.134:8080/members";
             try {
@@ -87,6 +74,19 @@ export const useMemberStore = defineStore('main', {
                 const totalPages = Math.ceil(totalItems / this.pageSize);
                 
                 this.getContents(totalPages);
+            } catch (error) {
+                alert('작업 중 에러가 발생했습니다.')
+            }
+        },
+        
+        async authenticate(password) {
+            const API_URL = "http://192.168.10.134:8080/members/authentication";
+            try {
+                const response = await axios.get(API_URL, {
+                    password
+                });
+                
+                return response.data;
             } catch (error) {
                 alert('작업 중 에러가 발생했습니다.')
             }

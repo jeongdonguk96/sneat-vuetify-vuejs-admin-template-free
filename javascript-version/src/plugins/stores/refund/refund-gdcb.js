@@ -12,10 +12,10 @@ export const useRefundStore = defineStore('main', {
 
     actions: {
         async getContents(dcb, inputtedKeyword, page = 1) {
-            const API_URL = "http://192.168.10.134:8080/refund/purchase-history";
+            const API_URL = "http://192.168.10.134:8080/refund/purchase-history/gdcb";
             try {
                 const response = await axios.get(API_URL, {
-                    params: { dcb, inputtedKeyword, page, pageSize: this.pageSize }
+                    params: { dcb, correlationID: inputtedKeyword, page, pageSize: this.pageSize }
                 });
                 
                 this.contents = response.data.responsePage.content;

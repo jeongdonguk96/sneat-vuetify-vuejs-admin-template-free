@@ -92,6 +92,7 @@
 <script setup lang='js'>
 import { ref } from 'vue';
 import { useConversionHistoryStore } from '@/plugins/stores/history/conversion-history-gdcb'
+import { validateInputtedCtn } from '@/plugins/stores/common/validation';
 import { storeToRefs } from 'pinia'
 
 
@@ -106,8 +107,8 @@ const validateAndGetContents = () => {
         return false;
     }
 
-    if (inputtedKeyword.value.trim().length === 0) {
-        alert('CTN을 입력해주세요.');
+    if (validateInputtedCtn(inputtedKeyword.value)) {
+        alert(validateInputtedCtn(inputtedKeyword.value))
         return false;
     }
 

@@ -142,7 +142,7 @@ export const routes = [
                 meta: { title: '환불 관리 - 환불 신청 (SDCB)' },
             },
             {
-                path: 'voc/histories/conversion',
+                path: 'voc/histories/conversion/gdcb',
                 component: () => import('@/pages/history/ConversionHistory-GDCB.vue'),
                 meta: { title: 'VOC - 전환 이력' },
             },
@@ -154,6 +154,11 @@ export const routes = [
             {
                 path: 'voc/histories/purchase',
                 component: () => import('@/pages/history/PurchaseHistory.vue'),
+                meta: { title: 'VOC - 결제 시도 이력' },
+            },
+            {
+                path: 'system/policies',
+                component: () => import('@/pages/policy/Policy.vue'),
                 meta: { title: 'VOC - 결제 시도 이력' },
             },
             {

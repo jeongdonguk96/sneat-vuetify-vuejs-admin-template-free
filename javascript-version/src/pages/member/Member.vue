@@ -28,9 +28,9 @@
                             <td>{{ content.team }}</td>
                             <td>{{ content.role }}</td>
                             <td>{{ content.services.join(', ') }}</td>
-                            <td>{{ content.username }}</td>
-                            <td>{{ content.name }}</td>
-                            <td>{{ content.email }}</td>
+                            <td>{{ maskingId(content.username) }}</td>
+                            <td>{{ maskingName(content.name) }}</td>
+                            <td>{{ maskingEmail(content.email) }}</td>
                             <td>{{ content.locked }}</td>
                             <td>{{ content.lastLoginDt }}</td>
                             <td><button class="edit-btn" @click="openAuthenticationDialog(content)">수정</button></td>
@@ -161,6 +161,7 @@
 import { dcbs } from '@/plugins/stores/common/dcb';
 import { roles } from '@/plugins/stores/common/role';
 import { validateEmail, validateName, validatePassword, validatePasswordConfirm, validateRole, validateTeam, validateUsername } from '@/plugins/stores/common/validation';
+import { maskingId, maskingEmail, maskingName } from '@/plugins/stores/common/masking';
 import { useMemberStore } from '@/plugins/stores/member/member';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';

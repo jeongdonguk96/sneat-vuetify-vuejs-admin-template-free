@@ -65,7 +65,10 @@
                             <td>{{ content.requestId }}</td>
                             <td>{{ content.partitionId }}</td>
                             <td>{{ content.status }}</td>
-                            <td>{{ content.ctn }}</td>
+                            <td>
+                                <span class="masked">{{ maskingCtn(content.ctn) }}</span>
+                                <span class="original">{{ formatCtn(content.ctn) }}</span>
+                            </td>
                             <td>{{ content.purchaseDt }}</td>
                             <td>{{ content.totalPrice }}</td>
                             <td>{{ content.cancelDt }}</td>
@@ -118,6 +121,7 @@
 <script setup lang='js'>
 import { ref } from 'vue';
 import { useRefundStore } from '@/plugins/stores/refund/refund-sdcb'
+import { formatCtn, maskingCtn } from '@/plugins/stores/common/masking';
 import { storeToRefs } from 'pinia'
 
 
@@ -308,5 +312,21 @@ thead th {
 
 .min-width-select {
     min-width: 120px;
+}
+
+.masked {
+    display: inline; /* 항상 마스킹된 콘텐츠 표시 */
+}
+
+.original {
+    display: none; /* 기본적으로 원본 콘텐츠 숨김 */
+}
+
+td:hover .masked {
+    display: none; /* 마우스 오버 시 마스킹된 콘텐츠 숨김 */
+}
+
+td:hover .original {
+    display: inline; /* 마우스 오버 시 원본 콘텐츠 표시 */
 }
 </style>

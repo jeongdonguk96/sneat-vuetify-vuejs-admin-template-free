@@ -40,7 +40,7 @@
                             <td><input type="checkbox" v-model="selectedFeetypeCd" :value="content.feeTypeCd" /></td>
                             <td>{{ content.feeTypeCd }}</td>
                             <td>{{ content.feeTypeNm }}</td>
-                            <td>{{ content.mbrId }}</td>
+                            <td>{{ maskingId(content.mbrId) }}</td>
                             <td>{{ content.regDt }}</td>
                         </tr>
                     </tbody>
@@ -95,6 +95,7 @@
 <script setup lang='js'>
 import { ref, computed } from 'vue';
 import { useBlockFeetypeStore } from '@/plugins/stores/block/block-feetype'
+import { maskingId } from '@/plugins/stores/common/masking';
 import { storeToRefs } from 'pinia'
 import { dcbs } from '@/plugins/stores/common/dcb'
 

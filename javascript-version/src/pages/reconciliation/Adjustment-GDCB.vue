@@ -10,7 +10,7 @@
                 <input type="month" v-model="month" :max="maxDate" />
             </v-col>
             <v-col cols="auto">
-                <v-btn variant="elevated" @click="validateAndGetStatistics">
+                <v-btn variant="elevated" @click="validateAndGetContents">
                     조회
                 </v-btn>
             </v-col>
@@ -89,7 +89,7 @@
 </template>
 
 <script setup lang='js'>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAdjustmentStore } from '@/plugins/stores/reconciliation/adjustment-gdcb'
 import { storeToRefs } from 'pinia'
 
@@ -108,18 +108,18 @@ const getLastMonth = () => {
 
 
 // 데이터 유효성 검사한 뒤 통계 데이터를 조회한다.
-const validateAndGetStatistics = () => {
+const validateAndGetContents = () => {
     if (selectedDcb.value === '' || selectedDcb.value == null) {
         alert("조회할 DCB를 선택해주세요.");
         return;
     }
 
-    getStatistics();
+    getContents();
 };
 
 
 // 데이터를 조회한다.
-const getStatistics = () => {
+const getContents = () => {
     store.getContents(selectedDcb.value, month.value);
 };
 
@@ -127,6 +127,11 @@ const getStatistics = () => {
 let selectedDcb = ref('GDCB');
 let month = ref(getLastMonth());
 const maxDate = ref(getLastMonth());
+
+
+onMounted(() => {
+    getContents(selectedDcb.value, month.value);
+});
 </script>
 
 <style>
